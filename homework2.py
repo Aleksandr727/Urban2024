@@ -1,12 +1,5 @@
-name = 'Александр'
-print(name, type(name))
-age = 39
-print(age)
-age = age + 1
-print(age)
-is_student = True
-print(is_student)
-
-
-
-str.isalpha()
+Number_of_homework = 12
+Number_of_hours = 1.5
+Course_name = 'Курс: Python'
+Time_for_one_homework = Number_of_hours / Number_of_homework
+print(Course_name,', всего задач:',N
