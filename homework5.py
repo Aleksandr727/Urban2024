@@ -1,13 +1,10 @@
-my_list = ['apple', 'lemon', 'melon', 'tomato', 'banana', 'peach', 'mango']
-print(my_list)
-print(my_list[:1])
-print(my_list[-1:])
-print(my_list[3:5])
-my_list[2]='fish'
-print(my_list)
-
-my_dict = {'seven': 7, 'fourteen': 14}
-print(my_dict)
-print(my_dict['seven'])
-my_dict['seven'] = 8
-print(my_dict)
+immutable_var = 7, 4, 6.2, 'orange', False
+# immutable_var[1] = 9  неизменяемый параметр, выдает ошибку при попытке изменить.
+print('Неизменяемый кортеж: ', immutable_var)
+# В отличие от списков, кортежи неизменяемы. Это значит, что элементы кортежа нельзя изменять после добавления в кортеж.
+# - Попытался изменить элементы кортежа immutable_var.
+# создаю список и изменяю его.
+mutable_list = [7, 4, 6.2, 'orange', False]
+print('Изменяемый список:', mutable_list)
+mutable_list[1] = 2
+print('Изменённый список:', mutable_list)
