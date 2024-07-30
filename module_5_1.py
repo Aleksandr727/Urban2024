@@ -1,3 +1,24 @@
+class House:
+    def __init__(self, name, floor):
+        self.name = name
+        self.number_of_floors = floor
+
+    def go_to(self, new_floor):
+        print(self.name)
+        if new_floor <= self.number_of_floors:
+            for i in range(1, new_floor + 1):
+                print(i)
+        else:
+            print('Такого этажа не существует')
+
+
+h1 = House('ЖК Университетский', 5)
+h2 = House('ЖК Победа', 10)
+h1.go_to(5)
+h2.go_to(11)
+
+
+# Второй вариант, посложнее.
 class House():
     def __init__(self, name, number_of_floors):
         self.name = name
@@ -5,6 +26,7 @@ class House():
         self.number_of_floors_max = number_of_floors
 
     def go_to(self, new_floor):
+        print(self.name)
         if new_floor > self.number_of_floors_max or new_floor < (self.number_of_floors_max-(self.number_of_floors_max-1)):
             print('Такого этажа не существует')
         else:
@@ -26,3 +48,4 @@ house_2.go_to(1)
 house_2.go_to(5)
 house_2.go_to(-2)
 house_2.go_to(6)
+
