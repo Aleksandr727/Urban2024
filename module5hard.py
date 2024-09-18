@@ -1,4 +1,32 @@
 import time
+class User:
+    def __init__(self, nickname, password, age):
+        self.nickname = nickname
+        self.password = hash(password)
+        self.age = age
+
+    def __str__(self):
+        return self.nickname
+
+    def __eq__(self, other):
+        return other.nickname == self.nickname
+
+    def get_info(self):
+        return self.nickname, self.password
+
+
+class Video:
+    def __init__(self, title, duration, adult_mode = False):
+        self.title = title
+        self.time_now = 0
+        self.duration = duration
+        self.adult_mode = adult_mode
+
+    def __str__(self):
+        return self.title
+
+    def __repr__(self):
+        return self.title
 
 
 class UrTube:
@@ -7,17 +35,11 @@ class UrTube:
     current_user = None
 
     def log_in(self, login: str, password: str) -> None:
-        """Метод log_in, который принимает на вход аргументы: login, password и пытается найти пользователя в users с
-        такими же логином и паролем. Если такой пользователь существует, то current_user меняется на найденного.
-        Помните, что password передаётся в виде строки, а сравнивается по хэшу."""
         for user in self.users:
             if login == user.nickname and password == user.password:
                 self.current_user = user
 
     def register(self, nickname: str, password: str, age: int) -> None:
-        """Метод register, который принимает три аргумента: nickname, password, age, и добавляет пользователя в список,
-        если пользователя не существует (с таким же nickname). Если существует, выводит на экран:
-        "Пользователь {nickname} уже существует". После регистрации, вход выполняется автоматически."""
         for user in self.users:
             if nickname in user.nickname:
                 print(f"Пользователь {nickname} уже существует")
@@ -29,19 +51,13 @@ class UrTube:
             self.log_in(user.nickname, user.password)
 
     def log_out(self):
-        """Метод log_out для сброса текущего пользователя на None."""
         self.current_user = None
 
     def add(self, *args):
-        """Метод add, который принимает неограниченное кол-во объектов класса Video и все добавляет в videos,
-        если с таким же названием видео ещё не существует. В противном случае ничего не происходит."""
         for movie in args:
             self.videos.append(movie)
 
     def get_videos(self, text: str) -> list:
-        """Метод get_videos, который принимает поисковое слово и возвращает список названий всех видео,
-        содержащих поисковое слово. Следует учесть, что слово 'UrbaN' присутствует в строке
-        'Urban the best' (не учитывать регистр)."""
         list_movie = []
         for video in self.videos:
             if text.upper() in video.title.upper():
@@ -49,9 +65,6 @@ class UrTube:
         return list_movie
 
     def watch_video(self, movie: str) -> None:
-        """Метод watch_video, который принимает название фильма, если не находит точного совпадения(вплоть до пробела),
-        то ничего не воспроизводится, если же находит, ведётся отчёт в консоль на какой секунде ведётся просмотр.
-        После текущее время просмотра данного видео сбрасывается."""
         if self.current_user and self.current_user.age < 18:
             print('Вам нет 18 лет, пожалуйста покиньте страницу')
         elif self.current_user:
@@ -67,65 +80,27 @@ class UrTube:
     def __str__(self):
         return f"{self.videos}"
 
+ur = UrTube()
+v1 = Video('Лучший язык программирования 2024 года', 200)
+v2 = Video('Для чего девушкам парень программист?', 10, adult_mode=True)
 
-class Video:
-    def __init__(self, title: str, duration: int, time_now: int = 0, adult_mode: bool = False):
-        self.title = title  # заголовок, строка
-        self.duration = duration  # продолжительность, секунды
-        self.time_now = time_now  # секунда остановки (изначально 0)
-        self.adult_mode = adult_mode  # ограничение по возрасту, bool (False по умолчанию)
+# Добавление видео
+ur.add(v1, v2)
 
-    def __str__(self):
-        return f"{self.title}"
+# Проверка поиска
+print(ur.get_videos('лучший'))
+print(ur.get_videos('ПРОГ'))
 
+# Проверка на вход пользователя и возрастное ограничение
+ur.watch_video('Для чего девушкам парень программист?')
+ur.register('vasya_pupkin', 'lolkekcheburek', 13)
+ur.watch_video('Для чего девушкам парень программист?')
+ur.register('urban_pythonist', 'iScX4vIJClb9YQavjAgF', 25)
+ur.watch_video('Для чего девушкам парень программист?')
 
-class User:
-    def __init__(self, nickname: str, password: str, age: int):
-        self.nickname = nickname  # имя пользователя, строка
-        self.password = password  # в хэшированном виде, число
-        self.age = age  # возраст, число
+# Проверка входа в другой аккаунт
+ur.register('vasya_pupkin', 'F8098FM8fjm9jmi', 55)
+print(ur.current_user)
 
-    def __str__(self):
-        return f'{self.nickname}'
-
-    def __eq__(self, other):
-        return self.nickname == other.nickname
-
-    def __hash__(self):
-        return hash(self.password)
-
-
-if __name__ == '__main__':
-    ur = UrTube()
-    v1 = Video('Лучший язык программирования 2024 года', 200)
-    v2 = Video('Для чего девушкам парень программист?', 10, adult_mode=True)
-
-    # Добавление видео
-    ur.add(v1, v2)
-
-    # Проверка поиска
-    print(ur.get_videos('лучший'))
-    print(ur.get_videos('ПРОГ'))
-
-    # Проверка на вход пользователя и возрастное ограничение
-    ur.watch_video('Для чего девушкам парень программист?')
-    ur.register('vasya_pupkin', 'lolkekcheburek', 13)
-    ur.watch_video('Для чего девушкам парень программист?')
-    ur.register('urban_pythonist', 'iScX4vIJClb9YQavjAgF', 25)
-    ur.watch_video('Для чего девушкам парень программист?')
-
-    # Проверка входа в другой аккаунт
-    ur.register('vasya_pupkin', 'F8098FM8fjm9jmi', 55)
-    print(ur.current_user)
-
-    # Попытка воспроизведения несуществующего видео
-    ur.watch_video('Лучший язык программирования 2024 года!')
-
-    # Вывод в консоль:
-    # ['Лучший язык программирования 2024 года']
-    # ['Лучший язык программирования 2024 года', 'Для чего девушкам парень программист?']
-    # Войдите в аккаунт, чтобы смотреть видео
-    # Вам нет 18 лет, пожалуйста покиньте страницу
-    # 1 2 3 4 5 6 7 8 9 10 Конец видео
-    # Пользователь vasya_pupkin уже существует
-    # urban_pythonist
+# Попытка воспроизведения несуществующего видео
+ur.watch_video('Лучший язык программирования 2024 года!')
