@@ -21,6 +21,8 @@ class Figure:
     @staticmethod
     def __is_valid_sides(*args):
         for side in args:
+            if len(new_sides) != self.sides_count:
+                return False
             if not isinstance(side, int) or side <=0:
                 return False
         return True
@@ -34,13 +36,9 @@ class Figure:
             p += i
         return p
 
-    def set_sides(self, *new_sides):
-        if len(new_sides) == len(self.__sides):
-            listik = []
-            for side in new_sides:
-                if self.__is_valid_sides(side):
-                    listik.append(side)
-            self.__sides = listik
+    def set_sides(self, *new_sides: int):
+        if self.__is_valid_sides(*new_sides):
+            self.__sides = list(new_sides)
 
 class Circle(Figure):
     sides_count = 1
@@ -66,9 +64,10 @@ class Triangle(Figure):
 
 class Cube(Figure):
     sides_count = 12
-    def __init__(self, color, sides):
-        side = [sides] * 12
-        super().__init__(color, *side)
+
+    def __init__(self, color: list, *sides: int):
+        super().__init__(color, *sides)
+self.set_sides(*list(sides) * 12)
 
     def get_volume(self):
         return self.get_sides()[0]**3
